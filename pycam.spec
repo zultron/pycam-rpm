@@ -64,11 +64,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %files 
-%defattr(-,root,root,-)
-%exclude %{_bindir}/pycam_win32_postinstall.py
+%doc *.TXT *.txt Changelog PKG-INFO
 %{_datadir}/%{name}/
 %{_bindir}/%{name}
-%doc *.TXT Changelog PKG-INFO *.txt 
 %{_datadir}/applications/pycam.desktop
 %{python_sitelib}/*
 
