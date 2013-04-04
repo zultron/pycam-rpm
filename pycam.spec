@@ -19,7 +19,6 @@ Requires:       pygtkglext
 
 
 %description
-
 PyCAM is a toolpath generator for 3-axis CNC machining. It loads 3D
 models in STL format or 2D contour models from DXF or SVG files. The
 resulting GCode can be used with EMC2 or any other machine controller.
@@ -43,13 +42,12 @@ done
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
 
 desktop-file-install  --dir=${RPM_BUILD_ROOT}%{_datadir}/applications \
     share/desktop/%{name}.desktop
 
-cd $RPM_BUILD_ROOT%{python_sitelib}/%{name}/
+pushd $RPM_BUILD_ROOT%{python_sitelib}/%{name}/
 # remove shebang lines from top of module files
 for lib in `find . -path "*.py"`; do
     echo $lib
@@ -57,10 +55,7 @@ for lib in `find . -path "*.py"`; do
         touch -r $lib $lib.new && \
         mv $lib.new $lib
 done
-
-
-%clean
-rm -rf $RPM_BUILD_ROOT
+popd
 
 
 %files 
@@ -74,18 +69,20 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Thu Apr  4 2013 John Morris <john@zultron.com> - 0.5.1-1
 - Use pycam.desktop from upstream; remove Source1
+- Cleanups for Fedora review
 
 * Sat May  5 2012  <john@zultron.com> - 0.5.1-0
 - Update to v.0.5.1
 
 * Fri Aug 20 2010 Fabian Kanngießer <underscores@fedoraproject.org> - 0.3-3
- - added a pygtk2 as said in the install textfile as dependency
+- added a pygtk2 as said in the install textfile as dependency
 
 * Fri Aug 20 2010 Fabian Kanngießer <underscores@fedoraproject.org> - 0.3-2
- - updated license to version given in the license textfile 
+- updated license to version given in the license textfile 
 
 * Thu Aug 19 2010 Fabian Kanngießer <underscores@fedoraproject.org> - 0.3-1
- . removed unneeded files, comments and added dependencies so that the application works correctly, added desktop file
+- removed unneeded files, comments and added dependencies so that the
+  application works correctly, added desktop file
 
 * Wed Aug 18 2010 Fabian Kanngießer <underscores@fedoraproject.org> - 0.3-0
- - initial packaging
+- initial packaging
