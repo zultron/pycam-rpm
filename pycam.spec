@@ -1,6 +1,6 @@
 Name:           pycam
 Version:        0.5.1
-Release:        0%{?dist}
+Release:        1%{?dist}
 Summary:        Open Source CAM - Toolpath Generation for 3-Axis CNC machining 
 Group:          Applications/Engineering
 License:        GPLv3+
@@ -8,7 +8,6 @@ URL:            http://sourceforge.net/projects/%{name}/
 BuildArch:      noarch
 
 Source0:        http://downloads.sourceforge.net/project/%{name}/%{name}/%{version}/%{name}-%{version}.tar.gz
-Source1:        %{name}.desktop
 
 BuildRequires:  python-devel
 BuildRequires:  ccache
@@ -47,6 +46,9 @@ done
 rm -rf $RPM_BUILD_ROOT
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
 
+desktop-file-install  --dir=${RPM_BUILD_ROOT}%{_datadir}/applications \
+    share/desktop/%{name}.desktop
+
 cd $RPM_BUILD_ROOT%{python_sitelib}/%{name}/
 # remove shebang lines from top of module files
 for lib in `find . -path "*.py"`; do
@@ -55,8 +57,6 @@ for lib in `find . -path "*.py"`; do
         touch -r $lib $lib.new && \
         mv $lib.new $lib
 done
-
-desktop-file-install  --dir=${RPM_BUILD_ROOT}%{_datadir}/applications %{SOURCE1}
 
 
 %clean
@@ -72,6 +72,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Apr  4 2013 John Morris <john@zultron.com> - 0.5.1-1
+- Use pycam.desktop from upstream; remove Source1
+
 * Sat May  5 2012  <john@zultron.com> - 0.5.1-0
 - Update to v.0.5.1
 
